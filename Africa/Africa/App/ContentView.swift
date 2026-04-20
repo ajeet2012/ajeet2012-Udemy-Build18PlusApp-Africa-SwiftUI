@@ -11,23 +11,46 @@ struct ContentView: View {
     
     //MARK: - PROPERTIES
     let animals: [Animal] = Bundle.main.decode("animals.json")
-    
+    @State private var selectedAnimal: Animal?
     //MARK: - BODY
+    
+    init() {
+            let animals = Bundle.main.decode("animals.json") as [Animal]
+            _selectedAnimal = State(initialValue: animals.first)
+        }
     
     var body: some View {
         
-        NavigationView {
-            List {
-                CoverImageView()
-                    .frame(height: 300)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0 ))
-                ForEach(animals) { animal in
-                    AnimaListItemView(animal: animal)
+        
+        
+        NavigationSplitView {
+                    
+                    // LEFT SIDE (List / Sidebar)
+                    List(selection: $selectedAnimal) {
+                        
+                        CoverImageView()
+                            .frame(height: 300)
+                            .listRowInsets(EdgeInsets())
+                            .listRowSeparator(.hidden)
+                        
+                        ForEach(animals) { animal in
+                            AnimaListItemView(animal: animal)
+                                .tag(animal) // 🔥 VERY IMPORTANT
+                        }
+                    }
+                    .navigationTitle("Africa")
+                    
+                } detail: {
+                    
+                    // RIGHT SIDE (Detail)
+                    if let selectedAnimal {
+                        AnimalDetailView(animal: selectedAnimal)
+                    } else {
+                        Text("Select an Animal")
+                            .font(.title2)
+                            .foregroundStyle(.secondary)
+                    }
                 }
-            }//: LIST
-            .navigationTitle("Africa")
-            .navigationBarTitleDisplayMode( .large )
-        }//: NAVIGATION-VIEW
     }
 }
 

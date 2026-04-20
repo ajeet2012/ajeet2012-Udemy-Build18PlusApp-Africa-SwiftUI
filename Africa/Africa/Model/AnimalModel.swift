@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Animal: Codable, Identifiable {
+struct Animal: Codable, Identifiable, Hashable {
     var id: String
     var name: String
     var headline: String
@@ -15,5 +15,10 @@ struct Animal: Codable, Identifiable {
     var link: String
     var image: String
     var gallery: [String]
-    var fact: [String]
+    var facts: [String]
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, headline, description, link, image, gallery
+        case facts = "fact"
+    }
 }
