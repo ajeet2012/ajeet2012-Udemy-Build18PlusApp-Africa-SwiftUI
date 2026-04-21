@@ -20,8 +20,11 @@ struct VideoListView: View {
         NavigationView {
             List {
                 ForEach(videos) { item in
-                    VideoListItemView(video: item)
-                        .padding(.vertical, 4)
+                    NavigationLink(destination: VideoPlayerView(videoSelected: item.id, videoTitle: item.name)) {
+                        VideoListItemView(video: item)
+                            .padding(.vertical, 4)
+                    }
+                    
                 }//: LOOP
             }//: LIST
             .listStyle(InsetGroupedListStyle())
@@ -36,7 +39,7 @@ struct VideoListView: View {
                         Image(systemName: "arrow.2.squarepath")
                     }
                     .sensoryFeedback(.impact, trigger: isPressed)
-
+                    
                 }
             }
         }// :NAVIGATION

@@ -14,11 +14,11 @@ struct ContentView: View {
     @State private var selectedAnimal: Animal?
     //MARK: - BODY
     
-    init() {
-            let animals = Bundle.main.decode("animals.json") as [Animal]
-            _selectedAnimal = State(initialValue: animals.first)
-        }
-    
+//    init() {
+//            let animals = Bundle.main.decode("animals.json") as [Animal]
+//            _selectedAnimal = State(initialValue: animals.first)
+//        }
+//    
     var body: some View {
         
         
