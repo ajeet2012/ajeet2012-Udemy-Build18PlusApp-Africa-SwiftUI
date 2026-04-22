@@ -33,6 +33,8 @@ struct MainView: View {
                     Text("Gallery")
                 }
         }//: TABVIEW
+        .tabViewStyle(.tabBarOnly) // Allows switching between sidebar & tab bar
+
     }
 }
 

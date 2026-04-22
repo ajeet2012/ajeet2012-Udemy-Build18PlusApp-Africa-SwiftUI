@@ -23,7 +23,7 @@ struct ContentView: View {
         gridColumn = gridLayout.count
         print("Grid column - \(gridColumn)")
         switch gridColumn {
-            case 1:
+        case 1:
             toolbarIcon = "square.grid.2x2"
         case 2:
             toolbarIcon = "square.grid.3x2"
@@ -45,36 +45,38 @@ struct ContentView: View {
         
         
         
-        NavigationSplitView {
+        NavigationView {
             
             Group {
                 if !isGridViewActive {
-                    List(selection: $selectedAnimal) {
-                        
+                    List {
                         CoverImageView()
                             .frame(height: 300)
-                            .listRowInsets(EdgeInsets())
-                            .listRowSeparator(.hidden)
+                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                         
                         ForEach(animals) { animal in
-                            AnimaListItemView(animal: animal)
-                                .tag(animal) // 🔥 VERY IMPORTANT
-                        }//: LOOP
-                    }
-                }//: LIST
-                else {
+                            NavigationLink(destination: AnimalDetailView(animal: animal)) {
+                                AnimaListItemView(animal: animal)
+                            } //: LINK
+                        } //: LOOP
+                        
+                        CreditsView()
+                            .modifier(CenterModifier())
+                    } //: LIST
+                    .listStyle(.plain)
+                } else {
                     ScrollView(.vertical, showsIndicators: false) {
                         LazyVGrid(columns: gridLayout, alignment: .center, spacing: 10) {
                             ForEach(animals) { animal in
                                 NavigationLink(destination: AnimalDetailView(animal: animal)) {
                                     AnimalGridItemView(animal: animal)
-                                }
-                            }
-                        }//: GRID
-                        .padding()
-                        .animation(.easeInOut(duration: 1.0), value: gridColumn) // ✅ FIX
-                    }//: SCROLL
-                }
+                                } //: LINK
+                            } //: LOOP
+                        } //: GRID
+                        .padding(10)
+                        .animation(.easeIn, value: gridLayout)
+                    } //: SCROLL
+                } //: CONDITION
             }//: GROUP
             .navigationTitle("Africa")
             .toolbar {
@@ -107,16 +109,6 @@ struct ContentView: View {
                 }
             }//: TOOL BAR
             
-        } detail: {
-            
-            // RIGHT SIDE (Detail)
-            if let selectedAnimal {
-                AnimalDetailView(animal: selectedAnimal)
-            } else {
-                Text("Select an Animal")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-            }
         }
     }
 }
